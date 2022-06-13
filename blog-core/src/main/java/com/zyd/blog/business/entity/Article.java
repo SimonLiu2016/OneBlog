@@ -6,19 +6,21 @@ import com.zyd.blog.business.enums.ArticleStatusEnum;
 import com.zyd.blog.persistence.beans.BizArticle;
 import com.zyd.blog.persistence.beans.BizTags;
 import com.zyd.blog.persistence.beans.BizType;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
 
 /**
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com)
- * @website https://www.zhyd.me
  * @version 1.0
+ * @website https://docs.zhyd.me
  * @date 2018/4/16 16:26
  * @since 1.0
  */
 public class Article {
-    private BizArticle bizArticle;
+    private final BizArticle bizArticle;
+    private Boolean isPrivate;
 
     public Article() {
         this.bizArticle = new BizArticle();
@@ -26,6 +28,7 @@ public class Article {
 
     public Article(BizArticle bizArticle) {
         this.bizArticle = bizArticle;
+        this.setPrivate(!StringUtils.isEmpty(bizArticle.getPassword()));
     }
 
     @JsonIgnore
@@ -73,11 +76,13 @@ public class Article {
         this.bizArticle.setQrcodePath(qrcodePath);
     }
 
+    @Deprecated
     public boolean getIsMarkdown() {
         Boolean value = this.bizArticle.getIsMarkdown();
-        return null == value ? false : value;
+        return null != value && value;
     }
 
+    @Deprecated
     public void setIsMarkdown(boolean isMarkdown) {
         this.bizArticle.setIsMarkdown(isMarkdown);
     }
@@ -130,11 +135,20 @@ public class Article {
 
     public boolean getRecommended() {
         Boolean value = this.bizArticle.getRecommended();
-        return value == null ? false : value;
+        return value != null && value;
     }
 
     public void setRecommended(Boolean value) {
         this.bizArticle.setRecommended(value);
+    }
+
+    public boolean getRequiredAuth() {
+        Boolean value = this.bizArticle.getRequiredAuth();
+        return value != null && value;
+    }
+
+    public void setRequiredAuth(Boolean requiredAuth) {
+        this.bizArticle.setRequiredAuth(requiredAuth);
     }
 
     public boolean isOriginal() {
@@ -146,13 +160,20 @@ public class Article {
         this.bizArticle.setOriginal(original);
     }
 
-
     public String getDescription() {
         return this.bizArticle.getDescription();
     }
 
     public void setDescription(String description) {
         this.bizArticle.setDescription(description);
+    }
+
+    public String getEditorType() {
+        return this.bizArticle.getEditorType();
+    }
+
+    public void setEditorType(String editorType) {
+        this.bizArticle.setEditorType(editorType);
     }
 
     public String getKeywords() {
@@ -190,6 +211,24 @@ public class Article {
         this.bizArticle.setComment(comment);
     }
 
+    public Boolean getPrivate() {
+        return isPrivate;
+    }
+
+    public Article setPrivate(Boolean aPrivate) {
+        isPrivate = aPrivate;
+        return this;
+    }
+
+    public String getPassword() {
+        return this.bizArticle.getPassword();
+    }
+
+    public Article setPassword(String password) {
+        this.bizArticle.setPassword(password);
+        return this;
+    }
+
     public List<BizTags> getTags() {
         return this.bizArticle.getTags();
     }
@@ -198,17 +237,17 @@ public class Article {
         return this.bizArticle.getBizType();
     }
 
-    public int getLookCount(){
+    public int getLookCount() {
         Integer lookCount = this.bizArticle.getLookCount();
         return lookCount == null ? 0 : lookCount;
     }
 
-    public int getCommentCount(){
+    public int getCommentCount() {
         Integer commentCount = this.bizArticle.getCommentCount();
         return commentCount == null ? 0 : commentCount;
     }
 
-    public int getLoveCount(){
+    public int getLoveCount() {
         Integer loveCount = this.bizArticle.getLoveCount();
         return loveCount == null ? 0 : loveCount;
     }

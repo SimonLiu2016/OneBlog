@@ -7,6 +7,8 @@
 </@header>
 
 <div class="container custome-container">
+    <#-- 广告位 -->
+    <div class="ad-mark" id="HOMEPAGE_TOP" style="display: none;margin-bottom: 10px"></div>
     <@prompt></@prompt>
     <nav class="breadcrumb">
         <div class="notify"><i class="fa fa-bullhorn fa-fw"></i></div>
@@ -41,7 +43,7 @@
                             <#list recommendedList as item>
                             <div class="item ${(item_index == 0)?string('active','')}">
                                 <a href="${config.siteUrl}/article/${item.id?c}">
-                                    <img src="${item.coverImage}" alt="${item.title}" title="${item.title}">
+                                    <img src="${item.coverImage}" onerror="this.src='${config.staticWebSite}/img/defaultbanner.png'" alt="${item.title}" title="${item.title}">
                                 </a>
                                 <div class="zyd-carousel-caption">${item.title}</div>
                             </div>
@@ -59,18 +61,51 @@
                 </div>
                 </#if>
             </@articleTag>
+            <@zhydTag method="scrollmenus" position="scrollmenu">
+                <#if scrollmenus?? && scrollmenus?size gt 0>
+                    <div class="blog-body expansion" style="padding: 0;">
+                        <div class="scrollmenu nav-tags">
+                            <span>更多分类：</span>
+                            <#list scrollmenus as item>
+                                <a href="/type/${item.id?c}" id="scrollmenu-${item.id?c}"><i class="${item.icon!}"></i>${item.name!}</a>
+                            </#list>
+                        </div>
+                    </div>
+                </#if>
+            </@zhydTag>
+<#--            <div class="separateline"><span>以下为最新文章</span></div>-->
+         <#--   <div class="blog-body expansion" style="padding: 0;margin-bottom: 0;border-bottom: 1px solid #eeeeee;">
+                <div class="scrollmenu nav-tags">
+                    <a href="/type/1" id="scrollmenu-1" class="red" style="color: red">最新文章</a>
+                    <a href="/type/1" id="scrollmenu-1">置顶文章</a>
+                    <a href="/type/1" id="scrollmenu-1">热门文章</a>
+                    <a href="/type/1" id="scrollmenu-1">评论最多</a>
+                    <a href="/type/1" id="scrollmenu-1">点赞最多</a>
+                </div>
+            </div>-->
             <#if page.list?? && (page.list?size > 0)>
                 <#list page.list as item>
                     <article class="fade-in">
                         <#if item.coverImage?? && (item.coverImage?length > 7)>
                             <figure class="thumbnail">
                                 <a href="${config.siteUrl}/article/${item.id?c}">
-                                    <img width="150" height="150" <#if config.lazyloadPath!>data-original<#else>src</#if>="${item.coverImage}" class="img-responsive lazy-img" alt="${item.title!}">
+                                    <img width="150" height="150" <#if config.lazyloadPath!>data-original<#else>src</#if>="${item.coverImage}" onerror="this.src='${config.staticWebSite}/img/default.png'" class="img-responsive lazy-img" alt="${item.title!}">
                                 </a>
-                                <span class="cat"><a href="${config.siteUrl}/type/${item.typeId?c}">${item.type.name}</a></span>
                             </figure>
                         </#if>
                         <header class="entry-header">
+                            <#if item.original?string('true','false') == 'true'>
+                                <span class="art art-original"><i class="fa fa-check fa-fw"></i>原创</span>
+                            <#else>
+                                <span class="art art-original-0"><i class="fa fa-reply fa-fw"></i>转载</span>
+                            </#if>
+                            <#if item.private>
+                                <span class="art art-type art-type-yellow"><i class="fa fa-lock fa-fw"></i>私密</span>
+                            </#if>
+                            <#if item.top>
+                                <span class="art art-top"><i class="fa fa-chevron-circle-up fa-fw"></i>置顶</span>
+                            </#if>
+                            <span class="art art-type"><a href="${config.siteUrl}/type/${item.typeId?c}"><i class="${item.type.icon!} fa-fw"></i> ${item.type.name}</a></span>
                             <h2 class="entry-title">
                                 <a href="${config.siteUrl}/article/${item.id?c}" rel="bookmark" title="${item.title}" data-toggle="tooltip" data-placement="bottom">${item.title}</a>
                             </h2>
@@ -79,7 +114,6 @@
                             <div class="archive-content">
                                 ${item.description!}
                             </div>
-                            <span class="title-l"></span>
                             <span class="entry-meta">
                                 <span class="date" title="文章发表日期" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-clock-o fa-fw"></i>${item.createTime?string('yyyy-MM-dd')}</span>
                                 <span class="views" title="文章阅读次数" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-eye fa-fw"></i>浏览(${item.lookCount!(0)})</span>
@@ -119,12 +153,13 @@
                         <div class="clear" style="margin-bottom: 10px"></div>
                         <ul class="list-unstyled list-inline search-hot">
                             <li><strong style="position: relative;top: 2px;color: #999999;">热门搜索：</strong></li>
-                            <li><a class="pointer" rel="external nofollow"><span class="label label-default">Java</span></a></li>
-                            <li><a class="pointer" rel="external nofollow"><span class="label label-primary">Springboot</span></a></li>
-                            <li><a class="pointer" rel="external nofollow"><span class="label label-success">Linux</span></a></li>
-                            <li><a class="pointer" rel="external nofollow"><span class="label label-info">Maven</span></a></li>
-                            <li><a class="pointer" rel="external nofollow"><span class="label label-warning">Bootstrap</span></a></li>
-                            <li><a class="pointer" rel="external nofollow"><span class="label label-danger">阿里云</span></a></li>
+                            <@zhydTag method="searchOptions">
+                                <#if searchOptions?? && (searchOptions?size > 0)>
+                                    <#list searchOptions as item>
+                                        <li><a class="pointer" rel="external nofollow"><span class="label label-info">${item}</span></a></li>
+                                    </#list>
+                                </#if>
+                            </@zhydTag>
                         </ul>
                     </form>
                 </article>
@@ -133,6 +168,26 @@
         <#include "layout/sidebar.ftl"/>
     </div>
 </div>
-
-<@footer></@footer>
+<#-- 广告位 -->
+<div id="HOMEPAGE_OPEN_SCREEN" style="display: none" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">站长力荐<i class="fa fa-fire red"></i></h4>
+            </div>
+            <div class="modal-body ad-mark" id="ad-body">
+            </div>
+        </div>
+    </div>
+</div>
+<@footer>
+    <script>
+        var typeMatch = location.href.match(/\/type\/([0-9]+)/);
+        if(null != typeMatch) {
+            var typeId = typeMatch[1];
+            $("#scrollmenu-" + typeId).addClass("active").attr("href", "javascript:void(0)");
+        }
+    </script>
+</@footer>
 </@compress>

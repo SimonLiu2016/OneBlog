@@ -1,5 +1,6 @@
 package com.zyd.blog.framework.runner;
 
+import com.zyd.blog.framework.property.AppProperties;
 import com.zyd.blog.framework.property.RedisProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ import javax.servlet.ServletContextEvent;
  *
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com)
  * @version 1.0
- * @website https://www.zhyd.me
+ * @website https://docs.zhyd.me
  * @date 2018/6/6 16:07
  * @since 1.0
  */
@@ -30,10 +31,8 @@ public class BlogApplicationRunner extends ContextLoaderListener implements Appl
 
     @Value("${server.port}")
     private int port;
-    @Value("${spring.profiles.active}")
-    private String profile;
-    @Value("${app.enabledConfigLog}")
-    private Boolean enabledConfigLog;
+    @Autowired
+    private AppProperties appProperties;
 
     @Autowired
     private DataSourceProperties dataSourceProperties;
@@ -50,7 +49,8 @@ public class BlogApplicationRunner extends ContextLoaderListener implements Appl
 
     @Override
     public void contextInitialized(ServletContextEvent event) {
-        if (null != enabledConfigLog && enabledConfigLog) {
+        log.info("current oneblog version：{}", appProperties.getVersion());
+        if (appProperties.isEnabledPrintConfig()) {
             log.info("博客关键配置信息：");
             String[] activeProfiles = configurableApplicationContext.getEnvironment().getActiveProfiles();
             if (ObjectUtils.isEmpty(activeProfiles)) {

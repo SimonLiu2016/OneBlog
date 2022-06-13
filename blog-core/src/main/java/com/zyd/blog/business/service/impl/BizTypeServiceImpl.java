@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,7 +27,7 @@ import java.util.List;
  *
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com)
  * @version 1.0
- * @website https://www.zhyd.me
+ * @website https://docs.zhyd.me
  * @date 2018/4/16 16:26
  * @since 1.0
  */
@@ -61,6 +63,17 @@ public class BizTypeServiceImpl implements BizTypeService {
         vo.setPageSize(100);
         PageHelper.startPage(vo.getPageNumber(), vo.getPageSize());
         List<BizType> entityList = bizTypeMapper.listTypeForMenu();
+        return getTypes(entityList);
+    }
+
+    @Override
+    public List<Type> listTypeByPosition(String position) {
+        Example example = new Example(BizType.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("position", StringUtils.isEmpty(position) ? "scrollmenu" : position)
+                .andEqualTo("available", true);
+        example.setOrderByClause("sort ASC");
+        List<BizType> entityList = bizTypeMapper.selectByExample(example);
         return getTypes(entityList);
     }
 
@@ -121,8 +134,6 @@ public class BizTypeServiceImpl implements BizTypeService {
         PageHelper.startPage(vo.getPageNumber(), vo.getPageSize());
         List<BizType> entityList = bizTypeMapper.selectAll();
 
-        List<Type> list = getTypes(entityList);
-        if (list == null) return null;
-        return list;
+        return getTypes(entityList);
     }
 }

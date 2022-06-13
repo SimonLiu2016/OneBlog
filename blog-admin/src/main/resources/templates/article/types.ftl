@@ -24,6 +24,15 @@
 <@addOrUpdateMOdal defaultTitle="添加分类">
     <input type="hidden" name="id">
     <div class="item form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="type">显示位置 <span class="required">*</span></label>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+            <select id="position" name="position" class="form-control col-md-5 col-xs-5" required="required">
+                <option value="nav">顶部菜单（不适宜太多）</option>
+                <option value="scrollmenu">首页滚动菜单（理论上可以有无限多个横向排列）</option>
+            </select>
+        </div>
+    </div>
+    <div class="item form-group">
         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">名称 <span class="required">*</span></label>
         <div class="col-md-6 col-sm-6 col-xs-12">
             <input type="text" class="form-control col-md-7 col-xs-12" name="name" id="name" required="required" placeholder="请输入分类名称"/>
@@ -132,6 +141,13 @@
                         return '<a href="' + appConfig.wwwPath + '/type/' + parent.id + '" target="_blank">' + parent.name + '</a>';
                     }
                 }, {
+                    field: 'position',
+                    title: '显示位置',
+                    width: '100px',
+                    formatter: function (code) {
+                        return code ? code : '-';
+                    }
+                }, {
                     field: 'description',
                     title: '描述',
                     width: '550px',
@@ -152,7 +168,7 @@
                     width: '50px',
                     align: 'center',
                     formatter: function (code) {
-                        return code ? '<span class="label label-success">可用</span>' : '<span class="label label-danger">不可用</span>';
+                        return code ? '<span class="label label-success">可用</span>' : '<span class="label label-danger">禁用</span>';
                     }
                 }, {
                     field: 'icon',

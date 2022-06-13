@@ -4,14 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zyd.blog.business.annotation.BussinessLog;
+import com.zyd.blog.business.entity.Article;
+import com.zyd.blog.business.entity.BizAdBo;
 import com.zyd.blog.business.entity.Comment;
 import com.zyd.blog.business.entity.Link;
 import com.zyd.blog.business.enums.CommentStatusEnum;
 import com.zyd.blog.business.enums.PlatformEnum;
-import com.zyd.blog.business.service.BizArticleService;
-import com.zyd.blog.business.service.BizCommentService;
-import com.zyd.blog.business.service.SysLinkService;
-import com.zyd.blog.business.service.SysNoticeService;
+import com.zyd.blog.business.service.*;
 import com.zyd.blog.business.vo.CommentConditionVO;
 import com.zyd.blog.framework.exception.ZhydArticleException;
 import com.zyd.blog.framework.exception.ZhydCommentException;
@@ -21,23 +20,24 @@ import com.zyd.blog.util.RestClientUtil;
 import com.zyd.blog.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * 网站接口类，申请友链、评论、点赞等
  *
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com)
  * @version 1.0
- * @website https://www.zhyd.me
+ * @website https://docs.zhyd.me
  * @date 2018/4/18 11:48
  * @since 1.0
  */
@@ -54,6 +54,8 @@ public class RestApiController {
     private BizArticleService articleService;
     @Autowired
     private SysNoticeService noticeService;
+    @Autowired
+    private BizAdService adService;
 
     @PostMapping("/autoLink")
     @BussinessLog(value = "自助申请友链", platform = PlatformEnum.WEB)
@@ -80,7 +82,7 @@ public class RestApiController {
         }
         Map<String, String> resultMap = new HashMap<>(4);
         String nickname = "匿名";
-        String json = RestClientUtil.get("http://users.qzone.qq.com/fcg-bin/cgi_get_portrait.fcg?uins=" + qq, "GBK");
+        String json = RestClientUtil.get("https://r.qzone.qq.com/fcg-bin/cgi_get_portrait.fcg?uins=" + qq, "GBK");
         if (!StringUtils.isEmpty(json)) {
             try {
                 json = json.replaceAll("portraitCallBack|\\\\s*|\\t|\\r|\\n", "");
@@ -155,6 +157,35 @@ public class RestApiController {
     @BussinessLog(value = "公告列表", platform = PlatformEnum.WEB, save = false)
     public ResponseVO listNotice() {
         return ResultUtil.success("", noticeService.listRelease());
+    }
+
+    @PostMapping("/verifyArticlePassword")
+    @BussinessLog(value = "验证文章密码", platform = PlatformEnum.WEB, save = false)
+    public ResponseVO verifyArticlePassword(Long articleId, String password) {
+        if (StringUtils.isEmpty(password)) {
+            return ResultUtil.error("文章密码错误");
+        }
+        Article article = articleService.getByPrimaryKey(articleId);
+        if (null == article) {
+            return ResultUtil.error(String.format("文章【%s】不存在！", articleId));
+        }
+        if (!article.getPrivate() || StringUtils.isEmpty(article.getPassword())) {
+            return ResultUtil.error(String.format("文章【%s】未加密！", articleId));
+        }
+        if (article.getPassword().equals(password)) {
+            return ResultUtil.success("文章密码验证通过", article.getContent());
+        }
+        return ResultUtil.error("文章密码错误");
+    }
+
+    @GetMapping("/ads")
+    public ResponseVO ads() {
+        List<BizAdBo> list = adService.listAll();
+        Map<String, BizAdBo> res = null;
+        if (!CollectionUtils.isEmpty(list)) {
+            res = list.stream().collect(Collectors.toMap(BizAdBo::getPosition, Function.identity(), (key1, key2) -> key2));
+        }
+        return ResultUtil.success(res);
     }
 
 }

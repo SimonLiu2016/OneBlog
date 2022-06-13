@@ -3,7 +3,7 @@
  * 项目核心Js类，负责项目前端模板方面的初始化等操作
  *
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com)
- * @website https://www.zhyd.me
+ * @website https://docs.zhyd.me
  * @version 1.0
  * @date 2018-04-25
  * @since 1.0
@@ -12,7 +12,7 @@ var editor = null, simplemde = null;
 
 var zhyd = window.zhyd || {
     combox: {
-        init: function () {
+        init: function (mockComboxCallback) {
             $('select[target=combox]').each(function (e) {
                 var $this = $(this);
                 var url = $this.data("url");
@@ -47,6 +47,10 @@ var zhyd = window.zhyd || {
                             var liTpl = '{{#data}}<li data-value="{{id}}">{{name}}</li>{{/data}}';
                             var html = Mustache.render(liTpl, json);
                             $this.html(html);
+
+                            if ($.isFunction(mockComboxCallback)) {
+                                mockComboxCallback();
+                            }
                         }
                     }
                 });
@@ -75,6 +79,7 @@ var zhyd = window.zhyd || {
                     function add() {
                         var thisId = $(this).data("value");
                         var thisText = $(this).text().trim();
+                        console.log(thisText);
                         $this.tagsinput('add', {"id": thisId, "name": thisText}, {add: false});
                     }
 
@@ -103,7 +108,7 @@ var zhyd = window.zhyd || {
                         }
                     });
                 })
-            }, 500);
+            }, 700);
         }
     },
     initTextSlider: function () {
@@ -162,13 +167,14 @@ var zhyd = window.zhyd || {
             editor = new E(config.container);
             // 配置编辑器 start
             // 关闭粘贴样式的过滤
-            editor.customConfig.pasteFilterStyle = false;
-            editor.customConfig.zIndex = 100;
+            editor.config.pasteFilterStyle = false;
+            editor.config.zIndex = 100;
+            editor.config.withCredentials = true;
             if (config.textareaName) {
                 $('<textarea class="wangeditor-textarea" id="' + config.textareaName + '" name="' + config.textareaName + '" style="display: none" required="required"></textarea>').insertAfter($(config.container));
             }
             var $contentBox = $('textarea[name=' + config.textareaName + ']');
-            editor.customConfig.onchange = function (html) {
+            editor.config.onchange = function (html) {
                 // 监控变化，同步更新到 textarea
                 $contentBox.val(html);
             };
@@ -188,7 +194,6 @@ var zhyd = window.zhyd || {
             // 配置编辑器 end
             editor.create();
             // 注册全屏插件
-            zhyd.wangEditor.plugins.registerFullscreen(config.container);
             // 注册图片资源库
             zhyd.wangEditor.plugins.registerMaterial(editor, $contentBox);
 
@@ -201,52 +206,25 @@ var zhyd = window.zhyd || {
             }
         },
         plugins: {
-            registerFullscreen: function () {
-                var E = zhyd.wangEditor._instance;
-                // 全屏插件
-                E.fullscreen = {
-                    init: function (editorBox) {
-                        $(editorBox + " .w-e-toolbar").append('<div class="w-e-menu"><a class="_wangEditor_btn_fullscreen" href="###" onclick="window.wangEditor.fullscreen.toggleFullscreen(\'' + editorBox + '\')" data-toggle="tooltip" data-placement="bottom" title data-original-title="全屏编辑"><i class="fa fa-expand"></i></a></div>')
-                    },
-                    toggleFullscreen: function (editorSelector) {
-                        $(editorSelector).toggleClass('fullscreen-editor');
-                        var $a = $(editorSelector + ' ._wangEditor_btn_fullscreen');
-                        var $i = $a.find("i:first-child");
-                        if ($i.hasClass("fa-expand")) {
-                            $a.attr("data-original-title", "退出全屏");
-                            $i.removeClass("fa-expand").addClass("fa-compress")
-                        } else {
-                            $a.attr("data-original-title", "全屏编辑");
-                            $i.removeClass("fa-compress").addClass("fa-expand")
-                        }
-                    }
-                };
-
-                // 初始化全屏插件
-                var n = arguments.length;
-                for (var i = 0; i < n; i++) {
-                    E.fullscreen.init(arguments[i]);
-                }
-            },
             registerUpload: function (editor, uploadUrl, uploadFileName, uploadType, callback) {
                 if (uploadUrl) {
                     // 上传图片到服务器
-                    editor.customConfig.uploadImgServer = uploadUrl;
-                    editor.customConfig.uploadFileName = uploadFileName;
+                    editor.config.uploadImgServer = uploadUrl;
+                    editor.config.uploadFileName = uploadFileName;
                     // 将图片大小限制为 50M
-                    editor.customConfig.uploadImgMaxSize = 50 * 1024 * 1024;
+                    editor.config.uploadImgMaxSize = 50 * 1024 * 1024;
                     // 超时时间
-                    editor.customConfig.uploadImgTimeout = 10000;
+                    editor.config.uploadImgTimeout = 10000;
                     // 自定义上传参数
-                    editor.customConfig.uploadImgParams = {
+                    editor.config.uploadImgParams = {
                         // 如果版本 <=v3.1.0 ，属性值会自动进行 encode ，此处无需 encode
                         // 如果版本 >=v3.1.1 ，属性值不会自动 encode ，如有需要自己手动 encode
                         uploadType: uploadType
                     };
-                    editor.customConfig.customAlert = function (msg) {
+                    editor.config.customAlert = function (msg) {
                         $.alert.error(msg);
                     };
-                    editor.customConfig.uploadImgHooks = {
+                    editor.config.uploadImgHooks = {
                         error: function (xhr, editor) {
                             $.alert.error("图片上传出错");
                         },
@@ -479,6 +457,104 @@ var zhyd = window.zhyd || {
             }
         }
     },
+    tinymce: {
+        defaultConfig: {
+            selector: "tinymceEditor",
+            uploadUrl: "",
+            uploadFileName: "file",
+            textareaName: "content",
+        },
+        init: function (options) {
+            var $op = $.extend(zhyd.tinymce.defaultConfig, options);
+            if ($op.textareaName) {
+                $('<textarea class="wangeditor-textarea" id="' + $op.textareaName + '" name="' + $op.textareaName + '" style="display: none" required="required"></textarea>').insertAfter($($op.selector));
+            }
+            var $contentBox = $('textarea[name=' + $op.textareaName + ']');
+            tinymce.init({
+                selector: $op.selector,
+                toolbar_mode: 'floating',
+                // width: 600,
+                height: 500,
+                plugins: [
+                    'powerpaste advlist autolink link image lists charmap print preview hr anchor pagebreak',
+                    'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+                    'table emoticons template paste help'
+                ],
+                menubar: 'file edit view insert format tools table',
+                toolbar: 'undo redo | styleselect | code | bold italic | alignleft aligncenter alignright alignjustify | ' +
+                    'bullist numlist outdent indent | link image | preview media fullscreen | ' +
+                    'forecolor backcolor emoticons | help',
+                content_langs: [
+                    { title: 'English', code: 'en' },
+                    { title: 'Chinese', code: 'zh' }
+                ],
+                // language: 'zh_CN',
+                // directionality: 'rtl',
+                custom_undo_redo_levels: 10,
+                images_upload_url: $op.uploadUrl,
+                images_upload_credentials: true,
+                automatic_uploads: false,
+                images_upload_handler: example_image_upload_handler,
+                init_instance_callback: function(editor) {
+                    editor.on('SetContent', function(e) {
+                        $contentBox.val(zhyd.tinymce.getHtml())
+                    });
+                    editor.on('Change', function(e) {
+                        $contentBox.val(zhyd.tinymce.getHtml())
+                    });
+                }
+            });
+            function example_image_upload_handler (blobInfo, success, failure, progress) {
+                var xhr, formData;
+                xhr = new XMLHttpRequest();
+                xhr.withCredentials = false;
+                xhr.open('POST', $op.uploadUrl);
+                xhr.upload.onprogress = function (e) {
+                    progress(e.loaded / e.total * 100);
+                };
+                xhr.onload = function() {
+                    var json;
+                    if (xhr.status === 403) {
+                        failure('HTTP Error: ' + xhr.status, { remove: true });
+                        return;
+                    }
+                    if (xhr.status < 200 || xhr.status >= 300) {
+                        failure('HTTP Error: ' + xhr.status);
+                        return;
+                    }
+                    json = JSON.parse(xhr.responseText);
+                    if (!json || typeof json.data != 'string') {
+                        failure('Invalid JSON: ' + xhr.responseText);
+                        return;
+                    }
+                    success(json.data);
+                };
+                xhr.onerror = function () {
+                    failure('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
+                };
+                formData = new FormData();
+                formData.append($op.uploadFileName, blobInfo.blob(), blobInfo.filename());
+                xhr.send(formData);
+            }
+        },
+        getHtml: function () {
+            // 只有一个编辑器
+            return tinymce.activeEditor.getContent();
+            // 多个编辑器
+            // return tinymce.editors[0].getContent();
+            // 不带HTML标记的纯文本内容
+            // var activeEditor = tinymce.activeEditor;
+            // var editBody = activeEditor.getBody();
+            // activeEditor.selection.select(editBody);
+            // var text = activeEditor.selection.getContent( {'format' : 'text' });
+        },
+        setHtml: function (html) {
+            // 只有一个编辑器
+            return tinymce.activeEditor.setContent(html);
+            // 多个编辑器
+            // return tinymce.editors[0].setContent(html);
+        }
+    },
     mask: {
         _box: '<div class="mask {{maskType}}"><div class="masker"><i class="{{icon}}"></i></div><h3 class="text">{{text}}</h3></div>',
         _icon: {
@@ -562,8 +638,7 @@ $(document).ready(function () {
             });
         }
     });
-    zhyd.combox.init();
-    zhyd.tagsInput.init();
+    zhyd.combox.init(zhyd.tagsInput.init);
     zhyd.mask.init();
 
     /**
@@ -582,7 +657,7 @@ $(document).ready(function () {
     });
 
     var notice = [
-        '<strong>Hi Boy!</strong> 前台首页的 “轮播”只会显示“推荐文章”哦',
+        '<strong class="red">Hi Boy! 前台首页的 “轮播”只会显示“推荐文章”哦</strong>',
         '要想百度搜索引擎快速收录文章，可以试试“推送”功能哦',
         '批量推送文章到百度可以一次提交多篇文章哦',
         '碰到页面显示和数据库内容不一致的情况，可以先考虑清下redis缓存哦',
@@ -592,7 +667,7 @@ $(document).ready(function () {
     ];
     var $noticeBox = $("#notice-box");
     var tpl = '{{#data}}<li class="scrolltext-title">'
-        + '<a href="javascript:void(0)" rel="bookmark">{{&.}}</a>'
+        + '{{&.}}'
         + '</li>{{/data}}';
     var html = Mustache.render(tpl, {"data": $.tool.shuffle(notice)});
     $noticeBox.html(html);
@@ -600,7 +675,7 @@ $(document).ready(function () {
     /**
      * 切换编辑器
      */
-    $("#changeEditor").click(function () {
+    $(".changeEditor").click(function () {
         var $this = $(this);
         $.alert.confirm("确定要切换编辑器吗？切换后本页内容将可能会丢失？", function () {
             window.location.href = $this.data("href");

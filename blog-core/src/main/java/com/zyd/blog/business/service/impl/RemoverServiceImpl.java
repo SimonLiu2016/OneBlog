@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 /**
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com)
  * @version 1.0
- * @website https://www.zhyd.me
+ * @website https://docs.zhyd.me
  * @date 2018/8/21 15:38
  * @since 1.8
  */
@@ -89,7 +89,8 @@ public class RemoverServiceImpl implements RemoverService {
 
     private void saveArticles(Long typeId, HunterConfig config, HunterPrintWriter writerUtil, CopyOnWriteArrayList<VirtualArticle> list) {
         // 获取数据库中的标签列表
-        Map<String, Long> originalTags = tagsService.listAll().stream().collect(Collectors.toMap(tag -> tag.getName().toUpperCase(), Tags::getId));
+        List<Tags> tags = tagsService.listAll();
+        Map<String, Long> originalTags = tags.stream().collect(Collectors.toMap(tag -> tag.getName().toUpperCase(), Tags::getId));
 
         User user = SessionUtil.getUser();
         // 添加文章到数据库
@@ -115,6 +116,7 @@ public class RemoverServiceImpl implements RemoverService {
         article.setIsMarkdown(false);
         article.setDescription(virtualArticle.getDescription());
         article.setKeywords(virtualArticle.getKeywords());
+        article.setEditorType("we");
         article = articleService.insert(article);
         writerUtil.print(String.format("[ save ] Succeed! <a href=\"%s\" target=\"_blank\">%s</a>", virtualArticle.getSource(), article.getTitle()));
         return article;

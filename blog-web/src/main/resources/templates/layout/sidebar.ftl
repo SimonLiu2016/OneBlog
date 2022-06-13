@@ -1,14 +1,15 @@
 <div class="col-sm-3 blog-sidebar">
-    <#if articleDetail??>
+    <#-- 广告位 -->
+    <div class="ad-mark" id="SIDEBAR_TOP" style="display: none"></div>
+    <#if articleDetail?? && (config.enableHitokoto == 1 || config.enableHitokoto == "1")>
         <div class="sidebar-module">
             <h5 class="custom-title"><i class="fa fa-hand-peace-o fa-fw icon"></i><strong>说给你听</strong><small></small></h5>
             <div class="div-quote">
-                <i class="fa fa-quote-left fa-fw"></i><p id="hitokoto" style="margin-left: 15px;"></p>
+                <i class="fa fa-quote-left fa-fw"></i><p class="hitokoto" style="margin-left: 15px;"></p>
             </div>
         </div>
     <#else>
         <div class="sidebar-module" style="position: relative;">
-            <a href='https://gitee.com/yadong.zhang/DBlog' target="_blank" rel="external nofollow"><img src='https://gitee.com/yadong.zhang/DBlog/widgets/widget_1.svg?color=07b83f' alt='Fork me on Gitee' style="position: absolute;right: 0;"/></a>
             <h5 class="custom-title"><i class="fa fa-home fa-fw icon"></i><strong>关于我</strong><small></small></h5>
             <div class="widget">
                 <div id="feed_widget">
@@ -49,7 +50,7 @@
     </#if>
     <div class="sidebar-module article-module hide" style="top: 0;">
         <h5 class="custom-title"><i class="fa fa-book fa-fw icon"></i><strong>本文目录</strong><i class="fa fa-close pull-right close-article-menu hide pointer"></i><small></small></h5>
-        <div id="article-menu">
+        <div id="article-menu" style="overflow:auto">
             <ul class="list-unstyled"></ul>
         </div>
     </div>
@@ -65,17 +66,32 @@
             </#if>
         </@zhydTag>
     </div>
-    <@zhydTag method="recentComments" pageSize="10">
+    <@zhydTag method="recentComments" pageSize="5">
         <#if recentComments?? && recentComments?size gt 0>
             <div class="sidebar-module">
                 <h5 class="custom-title"><i class="fa fa-comments fa-fw icon"></i><strong>近期评论</strong><small></small></h5>
                 <ul class="list-unstyled list-inline comments">
                 <#list recentComments as item>
                     <li>
-                        <a href="${item.sourceUrl}#comment-${item.id?c}" title="${item.briefContent!}" rel="external nofollow" data-toggle="tooltip" data-placement="bottom">
-                            <img alt="${item.nickname!}" src="${item.avatar!}" class="avatar auto-shake" height="64" width="64" onerror="this.src='${config.staticWebSite}/img/user.png'" />
-                            <span class="comment-author">${item.nickname!}</span> ${item.briefContent!}
-                        </a>
+                        <div class="clearfix" style="display: block;">
+                            <span>
+                                <img alt="${item.nickname!}" src="${item.avatar!}" class="avatar auto-shake" width="50" height="50" onerror="this.src='${config.staticWebSite}/img/user.png'">
+                            </span>
+                            <span class="newest_comment_author">
+                                ${item.nickname!}
+                            </span>
+                            <span class="fr" style="float: right;">
+                                <time style="font-size: 12px;">${item.createTime?string('yyyy-MM-dd HH:mm:ss')}</time>
+                            </span>
+                        </div>
+                        <div style="background-color: #f5f5f5;line-height: 1.7;border-radius: 3px;color: #333;" class="newest_comment_content pd10 mar10-t pos-r mar5-b pjt fs13">
+                            <a href="${item.sourceUrl}#comment-${item.id?c}" title="${item.briefContent!}">
+                                ${item.briefContent!}
+                            </a>
+                        </div>
+                        <span class="gray fs12" style="word-break: break-all;">来自：
+                            <a href="${item.sourceUrl}#comment-${item.id?c}">${item.articleTitle}</a>
+                        </span>
                     </li>
                 </#list>
                 </ul>
@@ -160,7 +176,10 @@
                 <li> <i class="fa fa-users fa-fw"></i> 在线人数：<span class="online">1</span>人</li>
                 <li> <i class="fa fa-calendar fa-fw"></i> 运行天数：${siteInfo.installdate!(1)}天</li>
                 <li> <i class="fa fa-pencil-square fa-fw"></i> 最后更新：${siteInfo.lastUpdateTime!("暂无更新记录")}</li>
+                <li> <i class="fa fa-vine fa-fw"></i>  系统版本：<a href="https://gitee.com/yadong.zhang/DBlog/releases/${appInfo.version!}" rel="nofollow" target="_blank" style="color: #4286ca;font-weight: 600;">${appInfo.version!}</a></li>
             </@zhydTag>
         </ul>
     </div>
+    <#-- 广告位 -->
+    <div class="ad-mark" id="SIDEBAR_BOTTOM" style="display: none"></div>
 </div>

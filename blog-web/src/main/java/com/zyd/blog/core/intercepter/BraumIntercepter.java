@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com)
  * @version 1.0
- * @website https://www.zhyd.me
+ * @website https://docs.zhyd.me
  * @date 2018/11/19 9:24
  * @since 1.8
  */
@@ -36,7 +36,7 @@ public class BraumIntercepter implements HandlerInterceptor {
         if(br.getCode() == SUCCESS) {
             return true;
         }
-        String errorMsg = String.format("第%s次被限制！", br.getLimitCount());
+        String errorMsg = String.format("[%s] | %s | 第%s次被限制！", RequestUtil.getIp(), RequestUtil.getUa(), br.getLimitCount());
         log.warn(errorMsg);
         if(RequestUtil.isAjax(request)) {
             response.setCharacterEncoding("UTF-8");

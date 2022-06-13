@@ -42,6 +42,15 @@
                                 <a href="#tab_praise" id="praise-tab" role="tab" data-toggle="tab" aria-expanded="true"><i class="fa fa-money fa-fw"></i> 赞赏码</a>
                             </li>
                             <li role="presentation" class="">
+                                <a href="#tab_custom" role="tab" id="custom-tab" data-toggle="tab" aria-expanded="false"><i class="fa fa-cog fa-fw"></i> 定制页面</a>
+                            </li>
+                            <li role="presentation" class="">
+                                <a href="#tab_hunter" role="tab" id="hunter-tab" data-toggle="tab" aria-expanded="false"><i class="fa fa-bug fa-fw"></i> Hunter 配置</a>
+                            </li>
+                            <li role="presentation" class="">
+                                <a href="#tab_cdn" role="tab" id="cdn-tab" data-toggle="tab" aria-expanded="false"><i class="fa fa-plug fa-fw"></i> CDN 资源</a>
+                            </li>
+                            <li role="presentation" class="">
                                 <a href="#tab_setting" role="tab" id="setting-tab" data-toggle="tab" aria-expanded="false"><i class="fa fa-tasks fa-fw"></i> 其他</a>
                             </li>
                         </ul>
@@ -56,7 +65,7 @@
                                         </div>
                                     </div>
                                     <div class="item form-group">
-                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="domain">主域名 <i class="fa fa-question-circle" title="例如：https://www.zhyd.me的主域名就是zhyd.me"></i> <span class="required">*</span></label>
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="domain">主域名 <i class="fa fa-question-circle" title="例如：https://docs.zhyd.me的主域名就是zhyd.me"></i> <span class="required">*</span></label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input type="text" class="form-control col-md-7 col-xs-12" name="domain" id="domain" required="required" placeholder="例如: zhyd.me"/>
                                         </div>
@@ -150,9 +159,9 @@
                                         </div>
                                     </div>
                                     <div class="item form-group">
-                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="baiduPushToken">百度推送Token <i class="fa fa-question-circle" title="方便百度引擎快速收录"></i> <span class="required">*</span></label>
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="baiduPushToken">百度推送Token <i class="fa fa-question-circle" title="方便百度引擎快速收录"></i> </label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input type="text" class="form-control col-md-7 col-xs-12" name="baiduPushToken" id="baiduPushToken" required="required" placeholder="请输入百度推送Token，推送功能能加快百度搜索引擎对博文的索引速度"/>
+                                            <input type="text" class="form-control col-md-7 col-xs-12" name="baiduPushToken" id="baiduPushToken" placeholder="请输入百度推送Token，推送功能能加快百度搜索引擎对博文的索引速度"/>
                                         </div>
                                     </div>
                                     <div class="item form-group">
@@ -162,9 +171,9 @@
                                         </div>
                                     </div>
                                     <div class="item form-group">
-                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="baiduPushCookie">百度推送Cookie <i class="fa fa-question-circle" title="请求API使用"></i> <span class="required">*</span></label>
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="baiduPushCookie">百度推送Cookie <i class="fa fa-question-circle" title="请求API使用"></i> </label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <textarea class="form-control col-md-7 col-xs-12" name="baiduPushCookie" id="baiduPushCookie" required="required" placeholder="请输入百度推送Cookie" rows="5"></textarea>
+                                            <textarea class="form-control col-md-7 col-xs-12" name="baiduPushCookie" id="baiduPushCookie" placeholder="请输入百度推送Cookie" rows="5"></textarea>
                                         </div>
                                     </div>
                                     <div class="item">
@@ -206,9 +215,21 @@
                                             </div>
                                         </div>
                                         <div class="item form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <small>请按照 <code>http://file.zhyd.me/</code> 格式填写，包含 <code>http://</code> 和末尾的 <code>/</code></small>
+                                            </div>
+                                        </div>
+                                        <div class="item form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="localFilePath">文件存储路径 <i class="fa fa-question-circle" title="Nginx服务中root后面对应的目录地址"></i> <span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <input type="text" class="form-control col-md-7 col-xs-12" name="localFilePath" id="localFilePath" required="required" placeholder="请输入文件存储路径，如：/var/www/oneblog/upload/"/>
+                                            </div>
+                                        </div>
+                                        <div class="item form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <small>请按照 <code>/var/www/oneblog/upload/</code> 格式填写，包含末尾的 <code>/</code></small>
                                             </div>
                                         </div>
                                         <div class="item form-group">
@@ -367,9 +388,22 @@
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="articleEditor">默认文章编辑器 <i class="fa fa-question-circle" title="文章编辑器"></i></label>
                                         <div class="col-md-6 col-sm-6 col-xs-12 fixed-radio-checkbox">
                                             <select name="articleEditor" id="articleEditor" class="form-control">
-                                                <option value="md">Markdown编辑器</option>
-                                                <option value="we">WangEditor编辑器</option>
+                                                <option value="md">Markdown 编辑器</option>
+                                                <option value="we">WangEditor 编辑器</option>
+                                                <option value="tiny">TinyMCE 编辑器</option>
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="tinyMCEKey">TinyMCE API Key</label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input type="text" class="form-control col-md-7 col-xs-12" name="tinyMCEKey" id="tinyMCEKey" placeholder="请输入TinyMCE API Key"/>
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <small>获取地址：<a href="https://www.tiny.cloud/my-account/dashboard/" target="_blank">点击获取 TinyMCE API Key</a></small>
                                         </div>
                                     </div>
 
@@ -455,6 +489,169 @@
                                     </div>
                                 </form>
                             </div>
+                            <div role="tabpanel" class="tab-pane fade" id="tab_custom" aria-labelledby="custom-tab">
+                                <form class="form-horizontal form-label-left" novalidate>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="aboutMeHtml">自定义“关于本站”的页面内容 <i class="fa fa-question-circle" title="自定义“关于本站”的页面内容"></i></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <textarea class="form-control col-md-7 col-xs-12" id="aboutMeHtml" name="aboutMeHtml" placeholder="允许自定义“关于本站”的页面内容" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <small>查看模板：<button type="button" class="btn btn-link" data-toggle="modal" data-target="#customTemplateModal">点击查看模板</button></small>
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="guestbookHtml">自定义“留言板”的页面内容 <i class="fa fa-question-circle" title="自定义“留言板”的页面内容"></i></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <textarea class="form-control col-md-7 col-xs-12" id="guestbookHtml" name="guestbookHtml" placeholder="允许自定义“留言板”的页面内容" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <small>查看模板：<button type="button" class="btn btn-link" data-toggle="modal" data-target="#customTemplateModal">点击查看模板</button></small>
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="linksHtml">自定义“友情链接”的页面内容 <i class="fa fa-question-circle" title="自定义“友情链接”的页面内容"></i></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <textarea class="form-control col-md-7 col-xs-12" id="linksHtml" name="linksHtml" placeholder="允许自定义“友情链接”的页面内容" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <small>查看模板：<button type="button" class="btn btn-link" data-toggle="modal" data-target="#customTemplateModal">点击查看模板</button></small>
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="disclaimerHtml">自定义“免责声明”内容 <i class="fa fa-question-circle" title="自定义“免责声明”内容"></i></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <textarea class="form-control col-md-7 col-xs-12" id="disclaimerHtml" name="disclaimerHtml" placeholder="自定义“免责声明”内容" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="footerHtml">自定义 Footer <i class="fa fa-question-circle" title="自定义 Footer 内容。Powered by 内容不可修改"></i></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <textarea class="form-control col-md-7 col-xs-12" id="footerHtml" name="footerHtml" placeholder="自定义 Footer 内容" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <small>注意：这将会完全替换掉 web 端的 Footer 内容</small>
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bubbleWord">自定义气泡文字 <i class="fa fa-question-circle" title="自定义 web 端鼠标点击后弹出的文字，半角逗号分隔。为空时不显示"></i></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <textarea class="form-control col-md-7 col-xs-12" id="bubbleWord" name="bubbleWord" placeholder="自定义 web 端鼠标点击后弹出的文字，半角逗号分隔。为空时不显示" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="searchOptions">自定义“热门搜索”的待选项 <i class="fa fa-question-circle" title="自定义 web 端 “热门搜索” 中的待选项，半角逗号分隔"></i></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <textarea class="form-control col-md-7 col-xs-12" id="searchOptions" name="searchOptions" placeholder="自定义 web 端 “热门搜索” 中的待选项，半角逗号分隔" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="customJs">自定义“JS” <i class="fa fa-question-circle" title="自定义 web 端 js，支持自定义百度统计等代码，不可包含 <script></script> 标签"></i></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <textarea class="form-control col-md-7 col-xs-12" id="customJs" name="customJs" placeholder="自定义 web 端 js，支持自定义百度统计等代码，不可包含 <script></script> 标签" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="customCss">自定义“CSS” <i class="fa fa-question-circle" title="自定义 web 端 CSS，不可包含 <style></style> 标签"></i></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <textarea class="form-control col-md-7 col-xs-12" id="customCss" name="customCss" placeholder="自定义 web 端 CSS，不可包含 <style></style> 标签" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="comment"></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <button type="button" class="btn btn-primary saveBtn"><i class="fa fa-save"> 保存</i></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="tab_hunter" aria-labelledby="hunter-tab">
+                                <form class="form-horizontal form-label-left" novalidate>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="blogHunterConfig">Hunter 配置文件 <i class="fa fa-question-circle" title="blog-hunter 配置文件，如果没有添加该配置，则默认取 src/main/resources/HunterConfig.json"></i></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <textarea class="form-control col-md-7 col-xs-12" id="blogHunterConfig" name="blogHunterConfig" placeholder="blog-hunter 配置文件，如果没有添加该配置，则默认取 src/main/resources/HunterConfig.json" rows="20"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="comment"></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <button type="button" class="btn btn-primary saveBtn"><i class="fa fa-save"> 保存</i></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="tab_cdn" aria-labelledby="cdn-tab">
+                                <form class="form-horizontal form-label-left" novalidate>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="adminJsCdn">自定义 ADMIN 模块的 JS CDN <i class="fa fa-question-circle" title="自定义 ADMIN 模块的 JS CDN"></i></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <textarea class="form-control col-md-7 col-xs-12" id="adminJsCdn" name="adminJsCdn" placeholder="自定义 ADMIN 模块的 JS CDN" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <small>查看模板：<button type="button" class="btn btn-link" data-toggle="modal" data-target="#customJsCdnModal">点击查看模板</button></small>
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="adminCssCdn">自定义 ADMIN 模块的 CSS CDN <i class="fa fa-question-circle" title="自定义 ADMIN 模块的 CSS CDN"></i></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <textarea class="form-control col-md-7 col-xs-12" id="adminCssCdn" name="adminCssCdn" placeholder="自定义 ADMIN 模块的 CSS CDN" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <small>查看模板：<button type="button" class="btn btn-link" data-toggle="modal" data-target="#customCssCdnModal">点击查看模板</button></small>
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="webJsCdn">自定义 Web 模块的 JS CDN <i class="fa fa-question-circle" title="自定义 Web 模块的 JS CDN"></i></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <textarea class="form-control col-md-7 col-xs-12" id="webJsCdn" name="webJsCdn" placeholder="自定义 Web 模块的 JS CDN" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <small>查看模板：<button type="button" class="btn btn-link" data-toggle="modal" data-target="#customWebJsCdnModal">点击查看模板</button></small>
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="webCssCdn">自定义 Web 模块的 CSS CDN <i class="fa fa-question-circle" title="自定义 Web 模块的 CSS CDN"></i></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <textarea class="form-control col-md-7 col-xs-12" id="webCssCdn" name="webCssCdn" placeholder="自定义 Web 模块的 CSS CDN" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <small>查看模板：<button type="button" class="btn btn-link" data-toggle="modal" data-target="#customWebCssCdnModal">点击查看模板</button></small>
+                                        </div>
+                                    </div>
+
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="comment"></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <button type="button" class="btn btn-primary saveBtn"><i class="fa fa-save"> 保存</i></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                             <div role="tabpanel" class="tab-pane fade" id="tab_setting" aria-labelledby="setting-tab">
                                 <form class="form-horizontal form-label-left" novalidate>
                                     <div class="item form-group">
@@ -470,6 +667,16 @@
                                         </div>
                                     </div>
                                     <div class="clear"></div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="maintenance">启用 Hitokoto（一言）
+                                            <i class="fa fa-question-circle" title="一言，随机显示一句话的插件，该插件部分时候加载较慢，如果不需要请自行关闭"></i> </label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12 fixed-radio-checkbox">
+                                            <ul class="list-unstyled list-inline">
+                                                <li><label for="maintenance" class="pointer"> <input type="radio" class="square" checked name="enableHitokoto" value="1"> 显示 </label> </li>
+                                                <li><label for="maintenance" class="pointer"> <input type="radio" class="square" name="enableHitokoto" value="0"> 关闭 </label></li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                     <div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="maintenance">维护通知
                                             <i class="fa fa-question-circle" title="网站在更新前， 可以通过开启该功能，通知用户"></i> </label>
@@ -503,7 +710,7 @@
                                         </div>
                                     </div>
                                     <div class="item form-group">
-                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="dynamicTitle">动态标题 <i class="fa fa-question-circle" title="当切换浏览器tab时，在原tab上的标题。比如https://www.zhyd.me上的“麻溜儿回来~~~”"></i></label>
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="dynamicTitle">动态标题 <i class="fa fa-question-circle" title="当切换浏览器tab时，在原tab上的标题。比如https://docs.zhyd.me上的“麻溜儿回来~~~”"></i></label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input type='text' class="form-control" id="dynamicTitle" name="dynamicTitle"  placeholder="请输入切换窗口时想要显示的标题，如：麻溜儿回来~~~"/>
                                         </div>
@@ -524,6 +731,218 @@
     </div>
 </div>
 </div>
+<div class="modal fade" id="customTemplateModal" tabindex="-1" role="dialog"
+     aria-labelledby="storageNginxServerModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="storageNginxServerModalLabel">自定义页面模板</h4>
+            </div>
+            <div class="modal-body">
+                <pre>
+                    <code>
+&lt;div class=&quot;col-sm-12 blog-main&quot;&gt;
+  &lt;div class=&quot;blog-body expansion&quot;&gt;
+    &lt;h5 class=&quot;custom-title&quot;&gt;
+      &lt;i class=&quot;fa fa-user-secret fa-fw&quot;&gt;&lt;/i&gt;&lt;strong&gt;标题&lt;/strong&gt;
+    &lt;/h5&gt;
+    &lt;div class=&quot;info&quot;&gt;内容&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+                    </code>
+                </pre>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="customJsCdnModal" tabindex="-1" role="dialog"
+     aria-labelledby="customJsCdnModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="storageNginxServerModalLabel">自定义 Admin 模块的 JS CDN 文件</h4>
+            </div>
+            <div class="modal-body">
+                <pre>
+                    <code>
+&lt;script type="text/javascript" src="https://cdn.staticfile.org/jquery/1.11.1/jquery.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="https://cdn.staticfile.org/jquery.lazyload/1.9.1/jquery.lazyload.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="https://cdn.staticfile.org/jquery-confirm/3.3.2/jquery-confirm.min.js"&gt;&lt;/script&gt;
+                    </code>
+                </pre>
+                <div class="row">
+                    <div class="col col-md-12 col-sm-12 col-xs-12">
+                        注意，OneBlog Admin 端用到的 js 文件以及版本如下：
+                        <table class="table table-hover table-striped">
+                            <tr><td>插件名</td><td>版本</td></tr>
+                            <tr><td>jquery</td><td><span class="badge">1.11.1</span></td></tr>
+                            <tr><td>bootstrap</td><td><span class="badge">3.3.5</span></td></tr>
+                            <tr><td>jquery.lazyload</td><td><span class="badge">1.9.1</span></td></tr>
+                            <tr><td>jquery-confirm</td><td><span class="badge">3.3.2</span></td></tr>
+                            <tr><td>jquery.fancybox</td><td><span class="badge">2.1.5</span></td></tr>
+                            <tr><td>mustache.js</td><td><span class="badge">2.3.0</span></td></tr>
+                            <tr><td>js-xss</td><td><span class="badge">0.3.3</span></td></tr>
+                            <tr><td>nprogress</td><td><span class="badge">0.2.0</span></td></tr>
+                            <tr><td>toastr.js</td><td><span class="badge">2.0.3</span></td></tr>
+                            <tr><td>iCheck</td><td><span class="badge">1.0.2</span></td></tr>
+                            <tr><td>bootstrap-table</td><td><span class="badge">1.11.1</span></td></tr>
+                            <tr><td>bootstrap-table-zh-CN</td><td><span class="badge">1.11.1</span></td></tr>
+                            <tr><td>bootstrap-daterangepicker/moment</td><td><span class="badge">2.1.25</span></td></tr>
+                            <tr><td>bootstrap-daterangepicker/daterangepicker</td><td><span class="badge">2.1.25</span></td></tr>
+                            <tr><td>bootstrap-datetimepicker</td><td><span class="badge">4.17.37</span></td></tr>
+                            <tr><td>bootstrap-progressbar</td><td><span class="badge">0.9.0</span></td></tr>
+                            <tr><td>zTree.v3/jquery.ztree.core</td><td><span class="badge">3.5.37</span></td></tr>
+                            <tr><td>zTree.v3/jquery.ztree.excheck</td><td><span class="badge">3.5.37</span></td></tr>
+                            <tr><td>switchery</td><td><span class="badge">0.8.2</span></td></tr>
+                            <tr><td>wangeditor</td><td><span class="badge">4.7.9</span></td></tr>
+                            <tr><td>bootstrap-tagsinput</td><td><span class="badge">0.8.0</span></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="customWebJsCdnModal" tabindex="-1" role="dialog"
+     aria-labelledby="customWebJsCdnModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="storageNginxServerModalLabel">自定义 Web 模块的 JS CDN 文件</h4>
+            </div>
+            <div class="modal-body">
+                <pre>
+                    <code>
+&lt;script type="text/javascript" src="https://cdn.staticfile.org/jquery/1.11.1/jquery.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="https://cdn.staticfile.org/jquery.lazyload/1.9.1/jquery.lazyload.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="https://cdn.staticfile.org/jquery-confirm/3.3.2/jquery-confirm.min.js"&gt;&lt;/script&gt;
+                    </code>
+                </pre>
+                <div class="row">
+                    <div class="col col-md-12 col-sm-12 col-xs-12">
+                        注意，OneBlog Web 端用到的 js 文件以及版本如下：
+                        <table class="table table-hover table-striped">
+                            <tr><td>插件名</td><td>版本</td></tr>
+                            <tr><td>jquery</td><td><span class="badge">1.11.1</span></td></tr>
+                            <tr><td>bootstrap</td><td><span class="badge">3.3.5</span></td></tr>
+                            <tr><td>jquery.lazyload</td><td><span class="badge">1.9.1</span></td></tr>
+                            <tr><td>jquery-confirm</td><td><span class="badge">3.3.2</span></td></tr>
+                            <tr><td>jquery.fancybox</td><td><span class="badge">2.1.5</span></td></tr>
+                            <tr><td>bootstrap-validator</td><td><span class="badge">0.5.3</span></td></tr>
+                            <tr><td>nprogress</td><td><span class="badge">0.2.0</span></td></tr>
+                            <tr><td>js-xss</td><td><span class="badge">0.3.3</span></td></tr>
+                            <tr><td>mustache.js</td><td><span class="badge">2.3.0</span></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="customCssCdnModal" tabindex="-1" role="dialog"
+     aria-labelledby="customCssCdnModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="storageNginxServerModalLabel">自定义 Admin 模块的 CSS CDN 文件</h4>
+            </div>
+            <div class="modal-body">
+                <pre>
+                    <code>
+&lt;link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"&gt;
+&lt;link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"&gt;
+&lt;link href="https://cdn.bootcdn.net/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css" rel="stylesheet"&gt;
+&lt;link href="https://cdn.bootcdn.net/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet"&gt;
+                    </code>
+                </pre>
+                <div class="row">
+                    <div class="col col-md-12 col-sm-12 col-xs-12">
+                        注意，OneBlog Admin 端用到的 Css 文件以及版本如下：
+                        <table class="table table-hover table-striped">
+                            <tr><td>插件名</td><td>版本</td></tr>
+                            <tr><td>font-awesome</td><td><span class="badge">4.7.0</span></td></tr>
+                            <tr><td>bootstrap</td><td><span class="badge">3.3.5</span></td></tr>
+                            <tr><td>jquery-confirm</td><td><span class="badge">3.3.2</span></td></tr>
+                            <tr><td>jquery.fancybox</td><td><span class="badge">2.1.5</span></td></tr>
+                            <tr><td>nprogress</td><td><span class="badge">0.2.0</span></td></tr>
+                            <tr><td>toastr</td><td><span class="badge">2.0.3</span></td></tr>
+                            <tr><td>iCheck</td><td><span class="badge">1.0.2</span></td></tr>
+                            <tr><td>bootstrap-table</td><td><span class="badge">1.11.1</span></td></tr>
+                            <tr><td>bootstrap-daterangepicker/daterangepicker</td><td><span class="badge">2.1.25</span></td></tr>
+                            <tr><td>bootstrap-datetimepicker</td><td><span class="badge">4.17.37</span></td></tr>
+                            <tr><td>zTree.v3/metroStyle</td><td><span class="badge">3.5.29</span></td></tr>
+                            <tr><td>switchery</td><td><span class="badge">0.8.2</span></td></tr>
+                            <tr><td>bootstrap-tagsinput</td><td><span class="badge">0.8.0</span></td></tr>
+                            <tr><td>bootstrap-tagsinput/bootstrap-tagsinput-typeahead</td><td><span class="badge">0.8.0</span></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="customWebCssCdnModal" tabindex="-1" role="dialog"
+     aria-labelledby="customWebCssCdnModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="storageNginxServerModalLabel">自定义 Web 模块的 CSS CDN 文件</h4>
+            </div>
+            <div class="modal-body">
+                <pre>
+                    <code>
+&lt;link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"&gt;
+&lt;link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"&gt;
+&lt;link href="https://cdn.bootcdn.net/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css" rel="stylesheet"&gt;
+&lt;link href="https://cdn.bootcdn.net/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet"&gt;
+                    </code>
+                </pre>
+                <div class="row">
+                    <div class="col col-md-12 col-sm-12 col-xs-12">
+                        注意，OneBlog Web 端用到的 Css 文件以及版本如下：
+                        <table class="table table-hover table-striped">
+                            <tr><td>插件名</td><td>版本</td></tr>
+                            <tr><td>font-awesome</td><td><span class="badge">4.7.0</span></td></tr>
+                            <tr><td>bootstrap</td><td><span class="badge">3.3.5</span></td></tr>
+                            <tr><td>jquery-confirm</td><td><span class="badge">3.3.2</span></td></tr>
+                            <tr><td>jquery.fancybox</td><td><span class="badge">2.1.5</span></td></tr>
+                            <tr><td>nprogress</td><td><span class="badge">0.2.0</span></td></tr>
+                            <tr><td>bootstrapvalidator</td><td><span class="badge">0.5.3</span></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="storageNginxServerModal" tabindex="-1" role="dialog"
      aria-labelledby="storageNginxServerModalLabel">
     <div class="modal-dialog" role="document">

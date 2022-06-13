@@ -29,6 +29,10 @@
         <link href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/github.min.css" rel="stylesheet">
     </#if>
     <#nested>
+
+    <style type="text/css">
+        ${config.customCss}
+    </style>
 </head>
 <body>
     <#include "/layout/header.ftl"/>
@@ -63,7 +67,9 @@
     <div class="col-sm-12 blog-main">
         <div class="blog-header">
             <h4>${title}</h4>
-            <p class="blog-description" id="hitokoto"></p>
+            <#if (config.enableHitokoto == 1 || config.enableHitokoto == "1")>
+                <p class="blog-description hitokoto"></p>
+            </#if>
             <div>
                 <a href="javascript:void(0);" target="_blank" title="点击QQ联系我" onclick="window.open('tencent://message/?uin=${config.qq}&amp;Site=www.${config.domain}&amp;Menu=yes')" rel="external nofollow"><i class="fa fa fa-qq fa-fw"></i>QQ联系</a>
                 |
@@ -93,12 +99,12 @@
         <div class="col-sm-12 col-md-12" style="float: initial;">
             <#if config.zfbPraiseCode!>
                 <a href="${config.zfbPraiseCode}" class="showImage" title="支付宝收钱码" rel="external nofollow">
-                    <img src="${config.zfbPraiseCode}" alt="支付宝收钱码" class="img-rounded" style="width: 250px;height: auto;">
+                    <img src="${config.zfbPraiseCode}" onerror="this.src='${config.staticWebSite}/img/default.png'" alt="支付宝收钱码" class="img-rounded" style="width: 250px;height: auto;">
                 </a>
             </#if>
             <#if config.wxPraiseCode!>
                 <a href="${config.wxPraiseCode}" class="showImage" title="微信收钱码" rel="external nofollow">
-                    <img src="${config.wxPraiseCode}" alt="微信收钱码" class="img-rounded" style="width: 250px;height: auto;">
+                    <img src="${config.wxPraiseCode}" onerror="this.src='${config.staticWebSite}/img/default.png'" alt="微信收钱码" class="img-rounded" style="width: 250px;height: auto;">
                 </a>
             </#if>
         </div>

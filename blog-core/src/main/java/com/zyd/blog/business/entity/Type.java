@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com)
  * @version 1.0
- * @website https://www.zhyd.me
+ * @website https://docs.zhyd.me
  * @date 2018/4/16 16:26
  * @since 1.0
  */
@@ -88,6 +88,14 @@ public class Type {
 
     public void setIcon(String icon) {
         this.bizType.setIcon(icon);
+    }
+
+    public String getPosition() {
+        return this.bizType.getPosition();
+    }
+
+    public void setPosition(String position) {
+        this.bizType.setPosition(position);
     }
 
     public Date getCreateTime() {

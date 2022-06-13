@@ -5,18 +5,20 @@ package com.zyd.blog.controller;
  *
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com)
  * @version 1.0
- * @website https://www.zhyd.me
+ * @website https://docs.zhyd.me
  * @date 2018/4/24 14:37
  * @since 1.0
  */
 
 import com.zyd.blog.business.annotation.BussinessLog;
 import com.zyd.blog.business.entity.Article;
+import com.zyd.blog.business.enums.AdPositionEnum;
+import com.zyd.blog.business.enums.AdTypeEnum;
 import com.zyd.blog.business.service.BizArticleService;
-import com.zyd.blog.business.service.SysConfigService;
+import com.zyd.blog.core.BlogHunterConfigProvider;
 import com.zyd.blog.core.websocket.server.ZydWebsocketServer;
+import com.zyd.blog.framework.exception.ZhydException;
 import com.zyd.blog.util.ResultUtil;
-import me.zhyd.hunter.config.HunterConfigTemplate;
 import me.zhyd.hunter.config.platform.Platform;
 import me.zhyd.hunter.enums.ExitWayEnum;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -30,12 +32,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Arrays;
+
 /**
  * 页面跳转类
  *
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com)
  * @version 1.0
- * @website https://www.zhyd.me
+ * @website https://docs.zhyd.me
  * @date 2018/4/24 14:37
  * @since 1.0
  */
@@ -45,9 +49,9 @@ public class RenderController {
     @Autowired
     private BizArticleService articleService;
     @Autowired
-    private SysConfigService configService;
-    @Autowired
     private ZydWebsocketServer websocketServer;
+    @Autowired
+    private BlogHunterConfigProvider blogHunterConfigProvider;
 
     @RequiresAuthentication
     @BussinessLog("进入首页")
@@ -85,17 +89,13 @@ public class RenderController {
     }
 
     @RequiresPermissions("article:publish")
-    @BussinessLog(value = "进入发表文章页[html]")
-    @GetMapping("/article/publish")
-    public ModelAndView publish() {
-        return ResultUtil.view("article/publish");
-    }
-
-    @RequiresPermissions("article:publish")
-    @BussinessLog(value = "进入发表文章页[markdown]")
-    @GetMapping("/article/publishMd")
-    public ModelAndView publishMd() {
-        return ResultUtil.view("article/publish-md");
+    @BussinessLog(value = "进入发表文章页[{1}]")
+    @GetMapping("/article/publish-{type}")
+    public ModelAndView publish(@PathVariable("type") String type) {
+        if (!Arrays.asList("we", "md", "tiny").contains(type)) {
+            throw new ZhydException("不支持的编辑器类型");
+        }
+        return ResultUtil.view("article/publish-" + type);
     }
 
     @RequiresPermissions("article:publish")
@@ -104,10 +104,11 @@ public class RenderController {
     public ModelAndView edit(@PathVariable("id") Long id, Model model) {
         model.addAttribute("id", id);
         Article article = articleService.getByPrimaryKey(id);
-        if(article.getIsMarkdown()){
-            return ResultUtil.view("article/publish-md");
+
+        if (!Arrays.asList("we", "md", "tiny").contains(article.getEditorType())) {
+            throw new ZhydException("文章异常，未知的编辑器类型");
         }
-        return ResultUtil.view("article/publish");
+        return ResultUtil.view("article/publish-" + article.getEditorType());
     }
 
     @RequiresPermissions("types")
@@ -200,7 +201,7 @@ public class RenderController {
     @GetMapping("/remover")
     public ModelAndView remover(Model model) {
         model.addAttribute("exitWayList", ExitWayEnum.values());
-        model.addAttribute("spiderConfig", HunterConfigTemplate.configTemplate.toJSONString());
+        model.addAttribute("spiderConfig", blogHunterConfigProvider.getBlogHunterConfig());
         model.addAttribute("platforms", Platform.values());
         return ResultUtil.view("laboratory/remover");
     }
@@ -211,4 +212,28 @@ public class RenderController {
     public ModelAndView files(Model model) {
         return ResultUtil.view("file/list");
     }
+
+    @RequiresPermissions("socials")
+    @BussinessLog("进入社会化登录配置管理页面")
+    @GetMapping("/socials")
+    public ModelAndView socials(Model model) {
+        return ResultUtil.view("social/list");
+    }
+
+    @RequiresPermissions("page")
+    @BussinessLog("进入配置自定义页面")
+    @GetMapping("/page")
+    public ModelAndView page(Model model) {
+        return ResultUtil.view("page/page");
+    }
+
+    @RequiresPermissions("bizAds")
+    @BussinessLog("进入广告页面")
+    @GetMapping("/bizAd")
+    public ModelAndView bizAd(Model model) {
+        model.addAttribute("positions", AdPositionEnum.toListMap());
+        model.addAttribute("types", AdTypeEnum.toListMap());
+        return ResultUtil.view("bizAd/bizAd");
+    }
+
 }
